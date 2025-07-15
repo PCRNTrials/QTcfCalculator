@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QTc Calculator – PCRN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      color: #005fa3;
+    }
+    label, input {
+      font-size: 1rem;
+    }
+    input[type="number"] {
+      width: 100px;
+      padding: 5px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #004c2f;
+    }
+  </style>
+</head>
+<body>
+  <h1>QTc Calculator</h1>
+  <p>Enter the QT interval (ms) and RR interval (ms) to calculate the corrected QT (QTc) using various formulas.</p>
+
+  <form id="qtc-form">
+    <div>
+      <label for="qt">QT Interval (ms): </label>
+      <input type="number" id="qt" required>
+    </div>
+    <br>
+    <div>
+      <label for="rr">RR Interval (ms): </label>
+      <input type="number" id="rr" required>
+    </div>
+    <br>
+    <button type="submit">Calculate</button>
+  </form>
+
+  <div class="result" id="results" style="display: none;"></div>
+
+  <script>
+    document.getElementById('qtc-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const qt = parseFloat(document.getElementById('qt').value);
+      const rr = parseFloat(document.getElementById('rr').value);
+
+      const qtcBazett = (qt / Math.sqrt(rr / 1000)).toFixed(1);
+      const qtcFridericia = (qt / Math.cbrt(rr / 1000)).toFixed(1);
+      const qtcFramingham = (qt + 0.154 * (1000 - rr)).toFixed(1);
+      const qtcHodges = (qt + 1.75 * (60 / (rr / 1000) - 60)).toFixed(1);
+
+      const resultDiv = document.getElementById('results');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        <p><strong>QTc (Bazett):</strong> ${qtcBazett} ms</p>
+        <p><strong>QTc (Fridericia):</strong> ${qtcFridericia} ms</p>
+        <p><strong>QTc (Framingham):</strong> ${qtcFramingham} ms</p>
+        <p><strong>QTc (Hodges):</strong> ${qtcHodges} ms</p>
+      `;
+    });
+  </script>
+</body>
+</html>
