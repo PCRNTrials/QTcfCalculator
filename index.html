@@ -135,7 +135,7 @@
       const qtcF = (qt / Math.cbrt(rrSeconds)).toFixed(1);
 
       const resultDiv = document.getElementById('result');
-      resultDiv.textContent = `QTc (Fridericia): ${qtcF} ms`;
+      resultDiv.innerHTML = `RR Interval: ${rr.toFixed(0)} ms<br>QTc (Fridericia): ${qtcF} ms`;
     });
   </script>
 
